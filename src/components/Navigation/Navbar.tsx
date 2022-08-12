@@ -24,11 +24,11 @@ const userNavigation = [
   { name: "Sign out", href: "#" },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   return (
     <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">
