@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Product } from "../../lib/atoms/productsAtom";
-import useProducts from "../../lib/hooks/useProducts";
 import LargeGraph from "./LargeGraph";
+import SmallGraph from "./SmallGraph";
 
 interface Props {
   product: Product;
@@ -9,8 +9,6 @@ interface Props {
 }
 
 const ProductItem: React.FC<Props> = ({ product, onSelectProduct }) => {
-  const { productStateValue, setProductStateValue } = useProducts();
-
   return (
     <div
       onClick={() => onSelectProduct && product && onSelectProduct(product)}
@@ -26,7 +24,9 @@ const ProductItem: React.FC<Props> = ({ product, onSelectProduct }) => {
       </div>
       {onSelectProduct ? (
         <>
-          <div className="flex">SMALL GRAPH</div>
+          <div className="flex">
+            <SmallGraph timeseries={product.timeseries} />
+          </div>
         </>
       ) : (
         <>

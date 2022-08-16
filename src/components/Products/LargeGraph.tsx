@@ -16,8 +16,6 @@ interface Props {
 }
 
 // TODO:
-// Convert timestamp to plain number (in scrapy)
-// Convert 0 values to null (in scrapy)
 // Style graph
 
 const LargeGraph: React.FC<Props> = ({ timeseries }) => {
