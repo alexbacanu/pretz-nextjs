@@ -1,6 +1,6 @@
 import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore";
 import { GetServerSideProps, NextPage } from "next";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ProductItem from "../../components/Products/ProductItem";
 import { Product } from "../../lib/atoms/productsAtom";
 import { firestore } from "../../lib/firebase/clientApp";
@@ -35,6 +35,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const ProductsPage: NextPage<Props> = (props) => {
   const { productStateValue, setProductStateValue, onSelectProduct } = useProducts();
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
 
   // TODO: Add offline support
   const buildNoUserProductsFeed = async () => {
@@ -45,10 +47,11 @@ const ProductsPage: NextPage<Props> = (props) => {
     }));
   };
 
-  const getMoreProducts = async () => {
+  const getMoreProducts = useCallback(async () => {
     const last = productStateValue.products.at(-1);
 
     const cursor = last?.crawledAt;
+    console.log(cursor);
 
     const productsQuery = query(
       collection(firestore, "products"),
@@ -65,21 +68,45 @@ const ProductsPage: NextPage<Props> = (props) => {
       ...doc.data(),
     }));
 
+    // Check if there are more products
+    setHasMore(newProductsDocs.docs.length > 0);
+
     // Store products in productState
     setProductStateValue((prev) => ({
       ...prev,
-      products: newProducts as Product[],
+      products: [...prev.products, ...(newProducts as Product[])],
     }));
 
     console.log(newProducts);
-  };
+  }, [productStateValue.products, setProductStateValue]);
+
+  const observer = useRef<IntersectionObserver>();
+  const lastProductElement = useCallback(
+    (node: HTMLDivElement) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          getMoreProducts();
+        }
+      });
+      if (node) observer.current.observe(node);
+      console.log(node);
+    },
+    [loading, hasMore, getMoreProducts]
+  );
 
   useEffect(() => {
+    setLoading(true);
     buildNoUserProductsFeed();
+    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     console.log("PSV", productStateValue);
+    setLoading(false);
   }, [productStateValue]);
 
   return (
@@ -88,12 +115,22 @@ const ProductsPage: NextPage<Props> = (props) => {
         <div className="max-w-2xl px-4 mx-auto sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             <>
-              {productStateValue.products.map((item) => {
-                return (
-                  <ProductItem key={item.id} product={item} onSelectProduct={onSelectProduct} />
-                );
+              {productStateValue.products.map((item, index) => {
+                if (productStateValue.products.length === index + 1) {
+                  return (
+                    <ProductItem
+                      innerRef={lastProductElement}
+                      key={item.id}
+                      product={item}
+                      onSelectProduct={onSelectProduct}
+                    />
+                  );
+                } else {
+                  return (
+                    <ProductItem key={item.id} product={item} onSelectProduct={onSelectProduct} />
+                  );
+                }
               })}
-              <button onClick={getMoreProducts}>Next products</button>
             </>
           </div>
         </div>

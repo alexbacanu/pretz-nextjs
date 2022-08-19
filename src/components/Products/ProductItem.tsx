@@ -4,13 +4,15 @@ import LargeGraph from "./LargeGraph";
 import SmallGraph from "./SmallGraph";
 
 interface Props {
+  innerRef?: (node: HTMLDivElement) => void;
   product: Product;
   onSelectProduct?: (value: Product) => void;
 }
 
-const ProductItem: React.FC<Props> = ({ product, onSelectProduct }) => {
+const ProductItem: React.FC<Props> = ({ innerRef, product, onSelectProduct }) => {
   return (
     <div
+      ref={innerRef}
       onClick={() => onSelectProduct && product && onSelectProduct(product)}
       className="space-y-2 bg-blue-200 "
     >
