@@ -15,17 +15,14 @@ interface Props {
   timeseries: Object;
 }
 
-// TODO:
-// Style graph
-
 const LargeGraph: React.FC<Props> = ({ timeseries }) => {
   ChartJS.register(TimeSeriesScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
   const labels = Object.keys(timeseries);
-  console.log("Labels:", labels);
+  console.log("Labels: ", labels);
 
   const priceData = Object.values(timeseries);
-  console.log("Price:", priceData);
+  console.log("Price: ", priceData);
 
   const options = {
     response: true,

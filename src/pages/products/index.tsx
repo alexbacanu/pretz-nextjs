@@ -36,22 +36,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const ProductsPage: NextPage<Props> = (props) => {
   const { productStateValue, setProductStateValue, onSelectProduct } = useProducts();
   const [loading, setLoading] = useState(true);
+  // TODO: hasMore defaults to true, needs more testing
   const [hasMore, setHasMore] = useState(true);
 
   // TODO: Add offline support
   const buildNoUserProductsFeed = async () => {
+    setLoading(true);
     // Store products in productState
     setProductStateValue((prev) => ({
       ...prev,
       products: props.products as Product[],
     }));
+    setLoading(false);
   };
 
   const getMoreProducts = useCallback(async () => {
+    setLoading(true);
     const last = productStateValue.products.at(-1);
 
     const cursor = last?.crawledAt;
-    console.log(cursor);
+    console.log("Cursor: ", cursor);
 
     const productsQuery = query(
       collection(firestore, "products"),
@@ -77,10 +81,14 @@ const ProductsPage: NextPage<Props> = (props) => {
       products: [...prev.products, ...(newProducts as Product[])],
     }));
 
-    console.log(newProducts);
+    console.log("New Products: ", newProducts);
+    setLoading(false);
   }, [productStateValue.products, setProductStateValue]);
 
+  // Observe the last element
   const observer = useRef<IntersectionObserver>();
+
+  // Get last div element from .map
   const lastProductElement = useCallback(
     (node: HTMLDivElement) => {
       if (loading) return;
@@ -91,21 +99,19 @@ const ProductsPage: NextPage<Props> = (props) => {
         }
       });
       if (node) observer.current.observe(node);
-      console.log(node);
+      console.log("Node: ", node);
     },
     [loading, hasMore, getMoreProducts]
   );
 
   useEffect(() => {
-    setLoading(true);
     buildNoUserProductsFeed();
-    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setLoading(true);
-    console.log("PSV", productStateValue);
+    console.log("PSV: ", productStateValue);
     setLoading(false);
   }, [productStateValue]);
 

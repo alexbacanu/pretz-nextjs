@@ -15,7 +15,7 @@ interface Props {
   timeseries: Object;
 }
 
-const SmallGraph = ({ timeseries }) => {
+const SmallGraph: React.FC<Props> = ({ timeseries }) => {
   ChartJS.register(TimeSeriesScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
   const labels = Object.keys(timeseries);

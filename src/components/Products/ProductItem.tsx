@@ -1,15 +1,15 @@
 import Image from "next/image";
 import { Product } from "../../lib/atoms/productsAtom";
-import LargeGraph from "./LargeGraph";
-import SmallGraph from "./SmallGraph";
+import LargeGraph from "./Graphs/LargeGraph";
+import SmallGraph from "./Graphs/SmallGraph";
 
 interface Props {
-  innerRef?: (node: HTMLDivElement) => void;
   product: Product;
   onSelectProduct?: (value: Product) => void;
+  innerRef?: (node: HTMLDivElement) => void;
 }
 
-const ProductItem: React.FC<Props> = ({ innerRef, product, onSelectProduct }) => {
+const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) => {
   return (
     <div
       ref={innerRef}
