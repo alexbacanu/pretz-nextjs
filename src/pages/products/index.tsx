@@ -110,9 +110,7 @@ const ProductsPage: NextPage<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
     console.log("PSV: ", productStateValue);
-    setLoading(false);
   }, [productStateValue]);
 
   return (

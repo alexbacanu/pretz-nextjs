@@ -17,7 +17,9 @@ export type Product = {
   productPrice: number;
   retailPrice: number;
   slashedPrice: number;
+  usedPrice: number;
 
+  usedTag: boolean;
   geniusTag: boolean;
 
   timeseries: Object;

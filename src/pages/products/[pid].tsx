@@ -41,7 +41,7 @@ const PIDPage: NextPage = () => {
 
   return (
     <div className="m-4">
-      <div className="flex items-center justify-center border-4 border-gray-200 border-dashed rounded-lg h-96">
+      <div className="flex items-center justify-center border-4 border-gray-200 border-dashed rounded-lg">
         {productStateValue.selectedProduct && (
           <ProductItem product={productStateValue.selectedProduct} />
         )}

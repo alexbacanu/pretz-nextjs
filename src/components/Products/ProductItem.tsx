@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/future/image";
 import { Product } from "../../lib/atoms/productsAtom";
 import LargeGraph from "./Graphs/LargeGraph";
 import SmallGraph from "./Graphs/SmallGraph";
@@ -11,33 +11,72 @@ interface Props {
 
 const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) => {
   return (
-    <div
-      ref={innerRef}
-      onClick={() => onSelectProduct && product && onSelectProduct(product)}
-      className="space-y-2 bg-blue-200 "
-    >
-      <div className="relative h-64 bg-red-200 max-w-[18rem] hover:opacity-75">
-        <Image src={product.productImg} layout="fill" objectFit="contain" alt="Product image" />
+    <>
+      <div ref={innerRef} onClick={() => onSelectProduct && product && onSelectProduct(product)}>
+        {!onSelectProduct ? (
+          <>
+            {console.log(product)}
+            <div className="flex items-center">
+              <div className="overflow-hidden bg-gray-200 rounded-md aspect-w-1 aspect-h-1 group-hover:opacity-75 ">
+                <Image
+                  src={product.productImg}
+                  alt="Product image"
+                  className="object-scale-down object-center w-auto h-auto"
+                  width={380}
+                  height={380}
+                />
+              </div>
+              <div className="relative w-8/12 m-auto">
+                <LargeGraph timeseries={product.timeseries} />
+              </div>
+            </div>
+            <div className="flex items-center justify-between mt-4">
+              <h3 className="pr-2 text-sm text-gray-700 line-clamp-3">
+                <a href="#">{product.productName}</a>
+              </h3>
+              <p className="font-bold text-red-600 whitespace-nowrap text-md">
+                {product.productPrice} Lei
+              </p>
+            </div>
+            <div className="flex-none max-w-md">
+              <p className="mt-1 text-sm text-gray-500">Last update: {`${product.crawledAt}`}</p>
+              <p className="mt-1 text-sm text-gray-500">Genius: {`${product.geniusTag}`}</p>
+              <p className="mt-1 text-sm text-gray-500">Used: {`${product.usedTag}`}</p>
+              <p className="mt-1 text-sm text-gray-500">ID: {product.id}</p>
+              <p className="mt-1 text-sm text-gray-500">Category: {product.productCategory}</p>
+              <p className="mt-1 text-sm text-gray-500">PID: {product.productID}</p>
+              <p className="mt-1 text-sm text-gray-500">Link: {product.productLink}</p>
+              <p className="mt-1 text-sm text-gray-500">Reviews: {product.productReviews}</p>
+              <p className="mt-1 text-sm text-gray-500">Stars: {product.productStars}</p>
+              <p className="mt-1 text-sm text-gray-500">Stoc: {product.productStock}</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="w-full overflow-hidden bg-gray-200 rounded-md aspect-w-1 aspect-h-1 group-hover:opacity-75 lg:aspect-none">
+              <Image
+                src={product.productImg}
+                alt="Product image"
+                className="object-scale-down object-center"
+                width={300}
+                height={320}
+              />
+            </div>
+            <div className="flex items-center justify-between mt-4">
+              <h3 className="pr-2 text-sm text-gray-700 line-clamp-3">
+                <a href="#">{product.productName}</a>
+              </h3>
+              <p className="font-bold text-red-600 whitespace-nowrap text-md">
+                {product.productPrice} Lei
+              </p>
+            </div>
+            <div className="relative w-full m-auto">
+              <SmallGraph timeseries={product.timeseries} />
+            </div>
+          </>
+        )}
       </div>
-
-      <div className="flex justify-between overflow-hidden bg-purple-200 overflow-ellipsis max-h-14">
-        <h3 className="w-5/6 text-sm text-gray-700 ">{product.productName}</h3>
-        <p className="text-sm font-bold text-gray-900">{product.productPrice}</p>
-      </div>
-      {onSelectProduct ? (
-        <>
-          <div className="flex">
-            <SmallGraph timeseries={product.timeseries} />
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="flex">
-            <LargeGraph timeseries={product.timeseries} />
-          </div>
-        </>
-      )}
-    </div>
+    </>
   );
 };
 

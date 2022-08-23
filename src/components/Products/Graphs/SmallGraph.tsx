@@ -4,7 +4,7 @@ import {
   LinearScale,
   LineElement,
   PointElement,
-  TimeSeriesScale,
+  TimeScale,
   Title,
   Tooltip,
 } from "chart.js";
@@ -16,23 +16,42 @@ interface Props {
 }
 
 const SmallGraph: React.FC<Props> = ({ timeseries }) => {
-  ChartJS.register(TimeSeriesScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+  ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-  const labels = Object.keys(timeseries);
+  // const labels = Object.keys(timeseries);
+  // console.log("Labels: ", labels);
 
   const priceData = Object.values(timeseries);
+  // console.log("Price Data: ", priceData);
+
+  // Sorting without mutating
+  const sortedPriceData = [...priceData].sort((a, b) => a.priceDate - b.priceDate);
+  // console.log("Sorted Price Data: ", sortedPriceData);
 
   const options = {
-    response: true,
+    responsive: true,
+    interaction: {
+      mode: "index" as const,
+      intersect: false,
+    },
     parsing: {
       xAxisKey: "priceDate",
     },
     scales: {
       x: {
+        // Weird typescript linting error
+        min: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) as unknown as string,
+        ticks: {
+          minRotation: 45,
+          maxRotation: 45,
+        },
         type: "time" as const,
         time: {
-          // TODO: Try to format it
           unit: "day" as const,
+          displayFormats: {
+            millisecond: "DD.MM",
+            day: "DD.MM",
+          },
         },
       },
     },
@@ -42,24 +61,35 @@ const SmallGraph: React.FC<Props> = ({ timeseries }) => {
     datasets: [
       {
         label: "Price",
-        data: priceData,
+        data: sortedPriceData,
         parsing: {
           yAxisKey: "productPrice",
         },
+        borderColor: "rgb(235, 109, 94)",
       },
       {
         label: "RRP",
-        data: priceData,
+        data: sortedPriceData,
         parsing: {
           yAxisKey: "retailPrice",
         },
+        borderColor: "rgb(150, 129, 200)",
       },
       {
         label: "Offer",
-        data: priceData,
+        data: sortedPriceData,
         parsing: {
           yAxisKey: "slashedPrice",
         },
+        borderColor: "rgb(108, 140, 253)",
+      },
+      {
+        label: "Used",
+        data: sortedPriceData,
+        parsing: {
+          yAxisKey: "usedPrice",
+        },
+        borderColor: "rgb(50,205,50)",
       },
     ],
   };

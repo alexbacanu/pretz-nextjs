@@ -7,7 +7,9 @@ import { Fragment } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { useSetRecoilState } from "recoil";
-import PlaceholderAccount from "../../../public/PlaceholderAccount.svg";
+import hLogov2 from "../../../public/hLogov2.svg";
+import honestpriceLogo from "../../../public/honestpriceLogo.svg";
+import placeholderAccount from "../../../public/placeholderAccount.svg";
 import { authModalState } from "../../lib/atoms/authModalAtom";
 import { auth } from "../../lib/firebase/clientApp";
 import Auth from "../Auth/Auth";
@@ -20,12 +22,12 @@ const userObj = {
 };
 
 const navigation = [
-  { name: "Products", href: "products", current: true },
+  { name: "Products", href: "/products", current: true },
   { name: "Deals", href: "#", current: false },
   { name: "Download", href: "#", current: false },
-  { name: "Pricing", href: "#", current: false },
-  { name: "Blog", href: "#", current: false },
-  { name: "About us", href: "#", current: false },
+  // { name: "Pricing", href: "#", current: false },
+  // { name: "Blog", href: "#", current: false },
+  // { name: "About us", href: "#", current: false },
 ];
 
 const userNavigation = [
@@ -56,24 +58,32 @@ const Navbar: React.FC = () => {
     <Disclosure as="nav" className="min-h-full shadow-md bg-slate-800">
       {({ open }) => (
         <>
-          {console.log(user)}
+          {/* {console.log(user)} */}
           <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {/* Logo and nav buttons */}
               <div className="flex items-center">
                 {/* Logo */}
-                <div className="self-center flex-shrink-0">
-                  <Image
-                    src="https://tailwindui.com/img/logos/v1/workflow-mark-on-dark.svg"
-                    alt="Workflow"
-                    width={40}
-                    height={40}
-                  />
+                <div className="self-center flex-shrink-0 cursor-pointer">
+                  <Link href="/">
+                    <a>
+                      <Image
+                        src={honestpriceLogo}
+                        alt="Logo"
+                        className="hidden w-auto h-10 md:block"
+                      />
+                    </a>
+                  </Link>
+                  <Link href="/">
+                    <a>
+                      <Image src={hLogov2} alt="Mini logo" className="w-auto h-10 md:hidden" />
+                    </a>
+                  </Link>
                 </div>
 
                 {/* Navigation */}
                 <div className="hidden md:block">
-                  <div className="flex items-baseline ml-10 space-x-4">
+                  <div className="flex items-baseline ml-5 space-x-4">
                     {navigation.map((item) => (
                       <Link key={item.name} href={item.href}>
                         <a
@@ -114,7 +124,7 @@ const Navbar: React.FC = () => {
                         <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                           <span className="sr-only">Open user menu</span>
                           <Image
-                            src={user.photoURL ? (user.photoURL as string) : PlaceholderAccount}
+                            src={user.photoURL ? (user.photoURL as string) : placeholderAccount}
                             alt="User profile image"
                             width={40}
                             height={40}
@@ -155,7 +165,7 @@ const Navbar: React.FC = () => {
                   </div>
                 ) : (
                   // User is logged out
-                  <div className="flex items-baseline ml-10 space-x-4">
+                  <div className="flex items-baseline ml-5 space-x-4">
                     <Link key="login" href="#">
                       <a
                         onClick={() =>
@@ -228,7 +238,7 @@ const Navbar: React.FC = () => {
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
                       <Image
-                        src={user.photoURL ? (user.photoURL as string) : PlaceholderAccount}
+                        src={user.photoURL ? (user.photoURL as string) : placeholderAccount}
                         alt="User profile image"
                         width={35}
                         height={35}
