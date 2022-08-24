@@ -1,5 +1,5 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { BellIcon, MenuIcon, SearchIcon, XIcon } from "@heroicons/react/outline";
 import { signOut } from "firebase/auth";
 import Image from "next/future/image";
 import Link from "next/link";
@@ -13,13 +13,6 @@ import placeholderAccount from "../../../public/placeholderAccount.svg";
 import { authModalState } from "../../lib/atoms/authModalAtom";
 import { auth } from "../../lib/firebase/clientApp";
 import Auth from "../Auth/Auth";
-
-const userObj = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 
 const navigation = [
   { name: "Products", href: "/products", current: true },
@@ -101,6 +94,15 @@ const Navbar: React.FC = () => {
                     ))}
                   </div>
                 </div>
+              </div>
+
+              {/* Search */}
+              <div className="relative flex flex-grow text-gray-400 focus-within:text-gray-600">
+                <SearchIcon className="absolute w-6 h-6 transform -translate-y-1/2 pointer-events-none top-1/2 right-5 " />
+                <input
+                  placeholder="Search any product"
+                  className="mx-3 px-3 py-1.5 rounded-md flex flex-grow"
+                />
               </div>
 
               {/* Profile buttons */}
