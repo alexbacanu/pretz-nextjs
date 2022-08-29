@@ -3,7 +3,7 @@ import { Fragment, useCallback, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { authModalState } from "../../lib/atoms/authModalAtom";
-import { auth } from "../../lib/firebase/clientApp";
+import { auth } from "../../lib/clients/firebaseClient";
 import AuthInputs from "./AuthInputs";
 import AuthProviders from "./AuthProviders";
 import ViewReset from "./Views/ViewReset";

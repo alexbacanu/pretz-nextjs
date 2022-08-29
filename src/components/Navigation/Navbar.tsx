@@ -1,5 +1,5 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, SearchIcon, XIcon } from "@heroicons/react/outline";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { signOut } from "firebase/auth";
 import Image from "next/future/image";
 import Link from "next/link";
@@ -11,8 +11,10 @@ import hLogov2 from "../../../public/hLogov2.svg";
 import honestpriceLogo from "../../../public/honestpriceLogo.svg";
 import placeholderAccount from "../../../public/placeholderAccount.svg";
 import { authModalState } from "../../lib/atoms/authModalAtom";
-import { auth } from "../../lib/firebase/clientApp";
+import { auth } from "../../lib/clients/firebaseClient";
+import useProducts from "../../lib/hooks/useProducts";
 import Auth from "../Auth/Auth";
+import Search from "./Search";
 
 const navigation = [
   { name: "Products", href: "/products", current: true },
@@ -46,6 +48,7 @@ function classNames(...classes: any[]) {
 const Navbar: React.FC = () => {
   const [user] = useAuthState(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
+  const { onSelectProduct } = useProducts();
 
   return (
     <Disclosure as="nav" className="min-h-full shadow-md bg-slate-800">
@@ -97,13 +100,14 @@ const Navbar: React.FC = () => {
               </div>
 
               {/* Search */}
-              <div className="relative flex flex-grow text-gray-400 focus-within:text-gray-600">
-                <SearchIcon className="absolute w-6 h-6 transform -translate-y-1/2 pointer-events-none top-1/2 right-5 " />
+              {/* <div className="relative flex flex-grow text-gray-400 focus-within:text-gray-600">
+                <MagnifyingGlassIcon className="absolute w-6 h-6 transform -translate-y-1/2 pointer-events-none top-1/2 right-5 " />
                 <input
                   placeholder="Search any product"
                   className="mx-3 px-3 py-1.5 rounded-md flex flex-grow"
                 />
-              </div>
+              </div> */}
+              <Search />
 
               {/* Profile buttons */}
               <div className="hidden md:block">
@@ -204,9 +208,9 @@ const Navbar: React.FC = () => {
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-200 bg-gray-800 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XIcon className="block w-6 h-6" aria-hidden="true" />
+                    <XMarkIcon className="block w-6 h-6" aria-hidden="true" />
                   ) : (
-                    <MenuIcon className="block w-6 h-6" aria-hidden="true" />
+                    <Bars3Icon className="block w-6 h-6" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>

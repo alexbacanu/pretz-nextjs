@@ -15,7 +15,6 @@ const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) =>
       <div ref={innerRef} onClick={() => onSelectProduct && product && onSelectProduct(product)}>
         {!onSelectProduct ? (
           <>
-            {console.log(product)}
             <div className="flex items-center">
               <div className="overflow-hidden bg-gray-200 rounded-md aspect-w-1 aspect-h-1 group-hover:opacity-75 ">
                 <Image
@@ -26,7 +25,7 @@ const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) =>
                   height={380}
                 />
               </div>
-              <div className="relative w-8/12 m-auto">
+              <div className="relative w-8/12 m-auto -z-10">
                 <LargeGraph timeseries={product.timeseries} />
               </div>
             </div>

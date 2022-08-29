@@ -1,6 +1,6 @@
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
-import { auth } from "../../lib/firebase/clientApp";
+import { auth } from "../../lib/clients/firebaseClient";
 
 interface Props {}
 

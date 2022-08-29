@@ -1,9 +1,9 @@
-import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore";
+import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore/lite";
 import { GetServerSideProps, NextPage } from "next";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ProductItem from "../../components/Products/ProductItem";
 import { Product } from "../../lib/atoms/productsAtom";
-import { firestore } from "../../lib/firebase/clientApp";
+import { firestore } from "../../lib/clients/firebaseClient";
 import useProducts from "../../lib/hooks/useProducts";
 
 interface Props {
@@ -55,7 +55,7 @@ const ProductsPage: NextPage<Props> = (props) => {
     const last = productStateValue.products.at(-1);
 
     const cursor = last?.crawledAt;
-    console.log("Cursor: ", cursor);
+    // console.log("Cursor: ", cursor);
 
     const productsQuery = query(
       collection(firestore, "products"),
@@ -81,7 +81,7 @@ const ProductsPage: NextPage<Props> = (props) => {
       products: [...prev.products, ...(newProducts as Product[])],
     }));
 
-    console.log("New Products: ", newProducts);
+    // console.log("New Products: ", newProducts);
     setLoading(false);
   }, [productStateValue.products, setProductStateValue]);
 
@@ -99,7 +99,7 @@ const ProductsPage: NextPage<Props> = (props) => {
         }
       });
       if (node) observer.current.observe(node);
-      console.log("Node: ", node);
+      // console.log("Node: ", node);
     },
     [loading, hasMore, getMoreProducts]
   );

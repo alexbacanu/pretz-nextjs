@@ -48,6 +48,7 @@ const LargeGraph: React.FC<Props> = ({ timeseries }) => {
         type: "time" as const,
         time: {
           unit: "day" as const,
+          tooltipFormat: "DD MMMM YYYY",
           displayFormats: {
             millisecond: "DD.MM",
             day: "DD.MM",

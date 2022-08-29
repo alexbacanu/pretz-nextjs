@@ -29,13 +29,25 @@ const SmallGraph: React.FC<Props> = ({ timeseries }) => {
   // console.log("Sorted Price Data: ", sortedPriceData);
 
   const options = {
+    elements: {
+      point: {
+        radius: 0, // default to disabled in all datasets
+      },
+    },
     responsive: true,
+    animation: false as const,
     interaction: {
       mode: "index" as const,
       intersect: false,
     },
     parsing: {
       xAxisKey: "priceDate",
+    },
+    normalized: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
     },
     scales: {
       x: {
@@ -48,6 +60,7 @@ const SmallGraph: React.FC<Props> = ({ timeseries }) => {
         type: "time" as const,
         time: {
           unit: "day" as const,
+          tooltipFormat: "DD MMMM YYYY",
           displayFormats: {
             millisecond: "DD.MM",
             day: "DD.MM",

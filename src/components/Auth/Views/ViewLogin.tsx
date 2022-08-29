@@ -1,10 +1,10 @@
-import { LockClosedIcon } from "@heroicons/react/solid";
+import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../lib/atoms/authModalAtom";
-import { auth } from "../../../lib/firebase/clientApp";
+import { auth } from "../../../lib/clients/firebaseClient";
 
 interface Props {}
 
