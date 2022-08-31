@@ -42,10 +42,10 @@ const Auth: React.FC<Props> = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 z-20 bg-black bg-opacity-25" />
         </Transition.Child>
         {/* Modal */}
-        <div className="fixed inset-0 overflow-y-auto">
+        <div className="fixed inset-0 z-20 overflow-y-auto">
           <div className="flex items-center justify-center min-h-full p-4 text-center">
             <Transition.Child
               as={Fragment}

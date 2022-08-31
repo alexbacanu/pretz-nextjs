@@ -1,4 +1,4 @@
-import Navbar from "../Navigation/Navbar";
+import Header from "../Header/Header";
 
 interface Props {
   children: React.ReactNode;
@@ -7,7 +7,7 @@ interface Props {
 const Layout: React.FC<Props> = ({ children }) => {
   return (
     <>
-      <Navbar />
+      <Header />
       <main>{children}</main>
     </>
   );

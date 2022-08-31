@@ -25,7 +25,7 @@ const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) =>
                   height={380}
                 />
               </div>
-              <div className="relative w-8/12 m-auto -z-10">
+              <div className="relative w-8/12 m-auto">
                 <LargeGraph timeseries={product.timeseries} />
               </div>
             </div>
