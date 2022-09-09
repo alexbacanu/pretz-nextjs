@@ -1,9 +1,8 @@
-import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore/lite";
 import { GetServerSideProps, NextPage } from "next";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ProductItem from "../../components/Products/ProductItem";
 import { Product } from "../../lib/atoms/productsAtom";
-import { firestore } from "../../lib/clients/firebaseClient";
+import { supabase } from "../../lib/clients/supabaseClient";
 import useProducts from "../../lib/hooks/useProducts";
 
 interface Props {
@@ -13,20 +12,12 @@ interface Props {
 const initialLimit = 10;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // Get products from database
-  const productsQuery = query(
-    collection(firestore, "products"),
-    orderBy("crawledAt", "desc"),
-    limit(initialLimit)
-  );
-
-  const productsDocs = await getDocs(productsQuery);
-
-  // Define products
-  const products = productsDocs.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  // Get products from supabase
+  const { data: products, error } = await supabase
+    .from("products")
+    .select()
+    .order("id", { ascending: false })
+    .limit(initialLimit);
 
   return {
     props: { products },
@@ -35,45 +26,39 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const ProductsPage: NextPage<Props> = (props) => {
   const { productStateValue, setProductStateValue, onSelectProduct } = useProducts();
+
   const [loading, setLoading] = useState(true);
   // TODO: hasMore defaults to true, needs more testing
   const [hasMore, setHasMore] = useState(true);
 
-  // TODO: Add offline support
   const buildNoUserProductsFeed = async () => {
     setLoading(true);
+
     // Store products in productState
     setProductStateValue((prev) => ({
       ...prev,
       products: props.products as Product[],
     }));
+
     setLoading(false);
   };
 
   const getMoreProducts = useCallback(async () => {
     setLoading(true);
+
     const last = productStateValue.products.at(-1);
 
-    const cursor = last?.crawledAt;
-    // console.log("Cursor: ", cursor);
+    const cursor = last?.id;
 
-    const productsQuery = query(
-      collection(firestore, "products"),
-      orderBy("crawledAt", "desc"),
-      startAfter(cursor),
-      limit(initialLimit)
-    );
-
-    const newProductsDocs = await getDocs(productsQuery);
-
-    // Define products
-    const newProducts = newProductsDocs.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const { data: newProducts, error } = await supabase
+      .from("products")
+      .select()
+      .lt("id", cursor)
+      .order("id", { ascending: false })
+      .limit(initialLimit);
 
     // Check if there are more products
-    setHasMore(newProductsDocs.docs.length > 0);
+    newProducts ? setHasMore(newProducts.length > 0) : "";
 
     // Store products in productState
     setProductStateValue((prev) => ({
@@ -81,7 +66,6 @@ const ProductsPage: NextPage<Props> = (props) => {
       products: [...prev.products, ...(newProducts as Product[])],
     }));
 
-    // console.log("New Products: ", newProducts);
     setLoading(false);
   }, [productStateValue.products, setProductStateValue]);
 
@@ -99,7 +83,6 @@ const ProductsPage: NextPage<Props> = (props) => {
         }
       });
       if (node) observer.current.observe(node);
-      // console.log("Node: ", node);
     },
     [loading, hasMore, getMoreProducts]
   );

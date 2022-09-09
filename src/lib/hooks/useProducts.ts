@@ -1,9 +1,8 @@
-import { doc, getDoc } from "firebase/firestore/lite";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { useRecoilState } from "recoil";
 import { Product, productState } from "../atoms/productsAtom";
-import { firestore } from "../clients/firebaseClient";
+import { supabase } from "../clients/supabaseClient";
 
 const useProducts = () => {
   const router = useRouter();
@@ -18,18 +17,16 @@ const useProducts = () => {
   };
 
   const fetchProduct = useCallback(
-    async (productId: string) => {
+    async (id: string) => {
       try {
-        // Get product from firestore
-        const productRef = doc(firestore, "products", productId);
-        const productDocs = await getDoc(productRef);
+        // Get product from supabase
+        const { data, error } = await supabase.from("products").select().eq("id", id).single();
 
         // Store product in state
         setProductStateValue((prev) => ({
           ...prev,
           selectedProduct: {
-            id: productDocs.id,
-            ...productDocs.data(),
+            ...data,
           } as Product,
         }));
       } catch (error) {

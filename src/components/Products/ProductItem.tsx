@@ -18,7 +18,7 @@ const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) =>
             <div className="flex items-center">
               <div className="overflow-hidden bg-gray-200 rounded-md aspect-w-1 aspect-h-1 group-hover:opacity-75 ">
                 <Image
-                  src={product.productImg}
+                  src={product.pImg}
                   alt="Product image"
                   className="object-scale-down object-center w-auto h-auto"
                   width={380}
@@ -31,30 +31,29 @@ const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) =>
             </div>
             <div className="flex items-center justify-between mt-4">
               <h3 className="pr-2 text-sm text-gray-700 line-clamp-3">
-                <a href="#">{product.productName}</a>
+                <a href="#">{product.pName}</a>
               </h3>
               <p className="font-bold text-red-600 whitespace-nowrap text-md">
-                {product.productPrice} Lei
+                {product.priceCurrent} Lei
               </p>
             </div>
             <div className="flex-none max-w-md">
               <p className="mt-1 text-sm text-gray-500">Last update: {`${product.crawledAt}`}</p>
-              <p className="mt-1 text-sm text-gray-500">Genius: {`${product.geniusTag}`}</p>
-              <p className="mt-1 text-sm text-gray-500">Used: {`${product.usedTag}`}</p>
+              <p className="mt-1 text-sm text-gray-500">Genius: {`${product.pGeniusTag}`}</p>
+              <p className="mt-1 text-sm text-gray-500">Used: {`${product.pUsedTag}`}</p>
               <p className="mt-1 text-sm text-gray-500">ID: {product.id}</p>
-              <p className="mt-1 text-sm text-gray-500">Category: {product.productCategory}</p>
-              <p className="mt-1 text-sm text-gray-500">PID: {product.productID}</p>
-              <p className="mt-1 text-sm text-gray-500">Link: {product.productLink}</p>
-              <p className="mt-1 text-sm text-gray-500">Reviews: {product.productReviews}</p>
-              <p className="mt-1 text-sm text-gray-500">Stars: {product.productStars}</p>
-              <p className="mt-1 text-sm text-gray-500">Stoc: {product.productStock}</p>
+              <p className="mt-1 text-sm text-gray-500">Category: {product.pCategory}</p>
+              <p className="mt-1 text-sm text-gray-500">PID: {product.pID}</p>
+              <p className="mt-1 text-sm text-gray-500">Link: {product.pLink}</p>
+              <p className="mt-1 text-sm text-gray-500">Reviews: {product.pReviews}</p>
+              <p className="mt-1 text-sm text-gray-500">Stars: {product.pStars}</p>
             </div>
           </>
         ) : (
           <>
             <div className="w-full overflow-hidden bg-gray-200 rounded-md aspect-w-1 aspect-h-1 group-hover:opacity-75 lg:aspect-none">
               <Image
-                src={product.productImg}
+                src={product.pImg}
                 alt="Product image"
                 className="object-scale-down object-center"
                 width={300}
@@ -63,14 +62,16 @@ const ProductItem: React.FC<Props> = ({ product, onSelectProduct, innerRef }) =>
             </div>
             <div className="flex items-center justify-between mt-4">
               <h3 className="pr-2 text-sm text-gray-700 line-clamp-3">
-                <a href="#">{product.productName}</a>
+                <a href="#">{product.pName}</a>
               </h3>
               <p className="font-bold text-red-600 whitespace-nowrap text-md">
-                {product.productPrice} Lei
+                {product.priceCurrent} Lei
               </p>
             </div>
             <div className="relative w-full m-auto">
-              <SmallGraph timeseries={product.timeseries} />
+              <>
+                <SmallGraph timeseries={product.timeseries} />
+              </>
             </div>
           </>
         )}

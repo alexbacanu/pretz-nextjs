@@ -18,15 +18,10 @@ interface Props {
 const LargeGraph: React.FC<Props> = ({ timeseries }) => {
   ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-  // const labels = Object.keys(timeseries);
-  // console.log("Labels: ", labels);
-
   const priceData = Object.values(timeseries);
-  // console.log("Price Data: ", priceData);
 
   // Sorting without mutating
   const sortedPriceData = [...priceData].sort((a, b) => a.priceDate - b.priceDate);
-  // console.log("Sorted Price Data: ", sortedPriceData);
 
   const options = {
     responsive: true,
@@ -64,7 +59,7 @@ const LargeGraph: React.FC<Props> = ({ timeseries }) => {
         label: "Price",
         data: sortedPriceData,
         parsing: {
-          yAxisKey: "productPrice",
+          yAxisKey: "priceCurrent",
         },
         borderColor: "rgb(235, 109, 94)",
       },
@@ -72,7 +67,7 @@ const LargeGraph: React.FC<Props> = ({ timeseries }) => {
         label: "RRP",
         data: sortedPriceData,
         parsing: {
-          yAxisKey: "retailPrice",
+          yAxisKey: "priceRetail",
         },
         borderColor: "rgb(150, 129, 200)",
       },
@@ -80,7 +75,7 @@ const LargeGraph: React.FC<Props> = ({ timeseries }) => {
         label: "Offer",
         data: sortedPriceData,
         parsing: {
-          yAxisKey: "slashedPrice",
+          yAxisKey: "priceSlashed",
         },
         borderColor: "rgb(108, 140, 253)",
       },
@@ -88,7 +83,7 @@ const LargeGraph: React.FC<Props> = ({ timeseries }) => {
         label: "Used",
         data: sortedPriceData,
         parsing: {
-          yAxisKey: "usedPrice",
+          yAxisKey: "priceUsed",
         },
         borderColor: "rgb(50,205,50)",
       },

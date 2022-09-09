@@ -12,7 +12,6 @@ const nextConfig = {
       "api.lorem.space",
     ],
   },
-  experimental: { images: { allowFutureImage: true } },
 };
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
@@ -22,4 +21,3 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const withTM = require("next-transpile-modules")(["react-daisyui"]);
 
 module.exports = withTM(nextConfig);
-

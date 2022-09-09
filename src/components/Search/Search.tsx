@@ -37,7 +37,6 @@ const Search = () => {
       searchClient={typesenseInstantSearchAdapter.searchClient}
     >
       <div className="relative flex-1">
-        {/* <CustomSearchBox toggleVisible={toggleVisible} onSubmit={(e: any) => console.log(e)} /> */}
         <SearchBox
           onSubmit={(event: any) => {
             return (event.target[0].value = "");
@@ -100,7 +99,6 @@ const CustomSearchBox = (props: any) => {
   const { refine } = useSearchBox(props);
 
   const debouncedRefine = useDebouncedCallback((value) => {
-    console.log(value);
     refine(value);
   }, 300);
 
@@ -114,7 +112,6 @@ const CustomSearchBox = (props: any) => {
   );
 
   const onSubmit = (event: any) => {
-    console.log(event);
     event.currentTarget.value = "";
   };
 
@@ -142,8 +139,8 @@ const CustomHits = ({ hit }: any) => {
         <div>
           <Image
             className="flex-shrink-0 rounded-md ring-1 ring-black ring-opacity-5"
-            src={hit.productImg}
-            alt={hit.productName}
+            src={hit.pImg}
+            alt={hit.pName}
             width={80}
             height={80}
             priority
@@ -153,10 +150,10 @@ const CustomHits = ({ hit }: any) => {
         {/* Product description */}
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex justify-between text-base text-gray-900">
-            <Highlight className="line-clamp-2" attribute="productName" hit={hit} />
-            <p className="ml-4 whitespace-nowrap">{hit.productPrice} Lei</p>
+            <Highlight className="line-clamp-2" attribute="pName" hit={hit} />
+            <p className="ml-4 whitespace-nowrap">{hit.priceCurrent} Lei</p>
           </div>
-          <p className="text-sm text-gray-500 ">{hit.productCategory}</p>
+          <p className="text-sm text-gray-500 ">{hit.pCategory}</p>
         </div>
       </a>
     </Link>

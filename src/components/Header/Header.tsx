@@ -7,7 +7,6 @@ import honestpriceLogo from "../../../public/honestpriceLogo.svg";
 import { authModalState } from "../../lib/atoms/authModalAtom";
 import { auth } from "../../lib/clients/firebaseClient";
 import Auth from "../Auth/Auth";
-import Search from "../Search/Search";
 
 interface Props {}
 
@@ -15,9 +14,6 @@ const navigation = [
   { name: "Products", href: "/products", current: true },
   { name: "Deals", href: "#", current: false },
   { name: "Download", href: "#", current: false },
-  // { name: "Pricing", href: "#", current: false },
-  // { name: "Blog", href: "#", current: false },
-  // { name: "About us", href: "#", current: false },
 ];
 
 const userNavigation = [
@@ -57,9 +53,7 @@ const Header: React.FC = (props: Props) => {
       {/* Button */}
 
       {/* Search */}
-      <div className="flex-1">
-        <Search />
-      </div>
+      <div className="flex-1">{/* <Search /> */}</div>
 
       {/* Profile & Auth buttons */}
       {user ? (

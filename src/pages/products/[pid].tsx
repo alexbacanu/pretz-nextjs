@@ -10,7 +10,6 @@ const PIDPage: NextPage = () => {
 
   useEffect(() => {
     const { pid } = router.query;
-    // console.log("SELECTED PRODUCT:", productStateValue.selectedProduct);
 
     if (pid && !productStateValue.selectedProduct) {
       fetchProduct(pid as string);

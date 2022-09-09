@@ -1,28 +1,24 @@
-import { Timestamp } from "firebase/firestore/lite";
 import { atom } from "recoil";
 
 export type Product = {
   id: string;
-  crawledAt: Timestamp;
-
-  productID: string;
-  productName: string;
-  productLink: string;
-  productImg: string;
-  productCategory: string;
-  productStars: number;
-  productReviews: number;
-  productStock: string;
-
-  productPrice: number;
-  retailPrice: number;
-  slashedPrice: number;
-  usedPrice: number;
-
-  usedTag: boolean;
-  geniusTag: boolean;
-
+  pID: string;
+  pStore: string;
+  pName: string;
+  pLink: string;
+  pImg: string;
+  pCategory: string;
+  pReviews: number;
+  pStars: number;
+  pGeniusTag: boolean;
+  pUsedTag: boolean;
+  priceCurrent: number;
+  priceRetail: number;
+  priceSlashed: number;
+  priceUsed: number;
   timeseries: Object;
+  crawledAt: Date;
+  // pStock: string;
 };
 
 export interface ProductState {
