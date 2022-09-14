@@ -1,15 +1,17 @@
-import Header from "../Header/Header";
+import { Box, Flex } from "@chakra-ui/react";
+import { ReactNode } from "react";
+import Footer from "./Footer";
+import Header from "./Header";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <>
+    <Flex direction="column" minHeight="100vh">
       <Header />
-      <main>{children}</main>
-    </>
+      <Box as="main" flex="1 0 auto" minHeight="800px">
+        {children}
+      </Box>
+      <Footer />
+    </Flex>
   );
 };
 
