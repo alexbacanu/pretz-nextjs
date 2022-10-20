@@ -1,10 +1,10 @@
 import { Box, Flex, HStack, Text, Wrap, WrapItem } from "@chakra-ui/react";
-import { definitions } from "src/lib/types/supabase";
+import { Product } from "src/lib/types/mongodb";
 import SearchItem from "./SearchItem";
 import SearchSort from "./SearchSort";
 
 interface Props {
-  products: definitions["products"][];
+  products: Product[];
 }
 
 const SearchResults: React.FC<Props> = ({ products }) => {
@@ -12,7 +12,7 @@ const SearchResults: React.FC<Props> = ({ products }) => {
     <Box>
       {products.length > 0 ? (
         <>
-          <Flex align={"center"} p={2} mx={8} justifyContent="space-between">
+          <Flex align={"center"} p={1.5} mx={8} justifyContent="space-between">
             <Text fontSize={{ base: "md", md: "lg" }} fontStyle="italic">{`${
               products.length
             } product${products.length === 1 ? "" : "s"} found`}</Text>
@@ -23,7 +23,7 @@ const SearchResults: React.FC<Props> = ({ products }) => {
           <Flex py={2}>
             <Wrap w={"full"} justify={"space-evenly"}>
               {products.map((product) => (
-                <WrapItem key={product.id}>
+                <WrapItem key={product.pID}>
                   <SearchItem product={product} />
                 </WrapItem>
               ))}

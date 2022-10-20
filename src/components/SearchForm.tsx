@@ -3,7 +3,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
   RangeSlider,
   RangeSliderFilledTrack,
   RangeSliderThumb,
@@ -13,77 +12,50 @@ import {
   SliderThumb,
   SliderTrack,
   Text,
-  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
-import { convertToNumber } from "src/lib/utils/convertToNumber";
+import { Product } from "src/lib/types/mongodb";
 
-interface Props {}
+interface SearchFormProps {
+  products: Product[];
+  prices: number[];
+  stars: number;
+  reviews: number;
+}
 
-const SearchForm = (props: Props) => {
-  const router = useRouter();
-  const { query } = router;
+const SearchForm: React.FC<SearchFormProps> = ({ products, prices, stars, reviews }) => {
+  const { query, pathname, push, replace, asPath } = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const minValue = prices[0];
+  const maxValue = prices[1];
+  const maxStars = stars;
+  const maxReviews = reviews;
+
+  const [values, setValues] = useState({
+    minPrice: Number(query.minPrice) || minValue,
+    maxPrice: Number(query.maxPrice) || maxValue,
+    minReviews: Number(query.minReviews) || 0,
+    minStars: Number(query.minStars) || 0,
+  });
+
+  const { minPrice, maxPrice, minReviews, minStars } = values;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const path = router.pathname;
-    const { query } = router;
+
     Object.entries(values).forEach(([key, value]) => {
-      if (value !== "" || value !== undefined) {
-        query[key] = value as string;
+      if (typeof value !== "number") return;
+
+      if (value !== undefined) {
+        query[key] = value.toString();
       }
     });
 
-    router.push({ pathname: path, query: query });
+    replace({ pathname, query });
   };
-
-  const minValue = 0;
-  const maxValue = 999999;
-
-  const [values, setValues] = useState({
-    name: "",
-    category: "",
-    minPrice: minValue,
-    maxPrice: maxValue,
-    minReviews: 0,
-    minStars: 0,
-  });
-
-  const { name, category, minPrice, maxPrice, minReviews, minStars } = values;
-
-  useEffect(() => {
-    const { query } = router;
-
-    const minValue = 0;
-    const maxValue = 999999;
-
-    setValues({
-      name: (query.name as string) || "",
-      category: (query.category as string) || "",
-      minPrice: convertToNumber(query?.minPrice as string) || minValue,
-      maxPrice: convertToNumber(query?.maxPrice as string) || maxValue,
-      minReviews: convertToNumber(query?.minReviews as string) || 0,
-      minStars: convertToNumber(query?.minStars as string) || 0,
-    });
-  }, [
-    query?.name,
-    query?.category,
-    query?.minPrice,
-    query?.maxPrice,
-    query?.minReviews,
-    query?.minStars,
-    router,
-  ]);
 
   return (
     <Box
@@ -98,41 +70,14 @@ const SearchForm = (props: Props) => {
     >
       <form onSubmit={handleSubmit}>
         <VStack mx={6} spacing={2}>
-          <FormControl id="name">
-            <FormLabel fontWeight="bold">Name</FormLabel>
-            <Input
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleChange}
-              placeholder="Search any product"
-              _placeholder={{ color: useColorModeValue("gray.900", "gray.100") }}
-              autoComplete="off"
-              fontSize={{ base: "sm", md: "md" }}
-            />
-          </FormControl>
-          <FormControl id="category">
-            <FormLabel fontWeight="bold">Category</FormLabel>
-            <Input
-              type="text"
-              name="category"
-              value={category}
-              onChange={handleChange}
-              placeholder="Select any category"
-              _placeholder={{ color: useColorModeValue("gray.900", "gray.100") }}
-              autoComplete="off"
-              fontSize={{ base: "sm", md: "md" }}
-            />
-          </FormControl>
           <FormControl id="price">
             <FormLabel fontWeight="bold">Price</FormLabel>
             <Text>{`${minPrice} RON - ${maxPrice} RON`}</Text>
             <RangeSlider
-              //   aria-label={["Min price", "Max price"]}
               min={minValue}
               max={maxValue}
               step={50}
-              onChangeEnd={(val) => {
+              onChange={(val) => {
                 setValues({
                   ...values,
                   minPrice: val[0],
@@ -148,17 +93,20 @@ const SearchForm = (props: Props) => {
               <RangeSliderThumb index={1} />
             </RangeSlider>
           </FormControl>
+
           <FormControl id="reviews">
-            <FormLabel fontWeight="bold">Reviews</FormLabel>
+            <FormLabel fontWeight="bold">Product reviews</FormLabel>
             <Text>{`${minReviews.toLocaleString()}`}</Text>
             <Slider
-              aria-label="Reviews"
-              onChangeEnd={(val) => {
+              aria-label="Product reviews"
+              onChange={(val) => {
                 setValues({
                   ...values,
                   minReviews: val,
                 });
               }}
+              max={maxReviews}
+              value={minReviews}
               defaultValue={0}
             >
               <SliderTrack>
@@ -169,6 +117,31 @@ const SearchForm = (props: Props) => {
               </SliderThumb>
             </Slider>
           </FormControl>
+
+          <FormControl id="stars">
+            <FormLabel fontWeight="bold">Product stars</FormLabel>
+            <Text>{`${minStars.toLocaleString()}`}</Text>
+            <Slider
+              aria-label="Product stars"
+              onChange={(val) => {
+                setValues({
+                  ...values,
+                  minStars: val,
+                });
+              }}
+              max={maxStars}
+              value={minStars}
+              defaultValue={0}
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb boxSize={4}>
+                <Box color={"orange"} as={AiFillStar} />
+              </SliderThumb>
+            </Slider>
+          </FormControl>
+
           <Button width="full" mt={4} type="submit" variant="primary">
             Search
           </Button>
