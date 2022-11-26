@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head />
       <body className="flex flex-col">
         <UIHeader />
-        <main className="mx-auto min-h-screen max-w-[1920px] bg-gray-50 p-4 sm:px-6 lg:px-8">
+        <main className="mx-auto min-h-screen w-full max-w-[1920px] p-4 sm:px-6 lg:px-8">
           {children}
         </main>
         <UIFooter />

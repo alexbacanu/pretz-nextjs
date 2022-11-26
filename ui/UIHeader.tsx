@@ -11,7 +11,7 @@ type UIHeaderProps = {};
 
 const UIHeader = (props: UIHeaderProps) => {
   return (
-    <Popover as="header" className="sticky top-0 z-40 bg-gray-50">
+    <Popover as="header" className="sticky top-0 z-40 bg-white">
       {/* Desktop */}
       <div className="mx-auto flex max-w-[1920px] items-center justify-between space-x-6 p-4 sm:px-6 lg:px-8">
         {/* Logo */}
